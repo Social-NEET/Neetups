@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Leaflet Map Example</title>
+    <title>Meetup Map Dance Party</title>
     <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <style>
-        /* Make the map fill most of the page */
+        /* Map fills most of the page */
         #map {
-            height: 90vh; /* leave space for the back button */
+            height: 90vh;
             width: 100%;
         }
 
@@ -25,10 +25,10 @@
             border: none;
             border-radius: 6px;
             text-decoration: none;
-            position: fixed; /* stays at top-left */
+            position: fixed;
             top: 10px;
-            left: 50px;
-            z-index: 1000; /* above the map */
+            left: 10px;
+            z-index: 1000;
             transition: background-color 0.3s, transform 0.2s;
         }
 
@@ -36,20 +36,89 @@
             background-color: #0056b3;
             transform: scale(1.05);
         }
+
+        /* Dancing GIFs styling */
+        .dancing-gif {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            z-index: 999;
+            pointer-events: none; /* so map interactions still work */
+            animation: bounce 2s infinite alternate;
+        }
+
+        @keyframes bounce {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-15px); }
+        }
     </style>
 </head>
 <body>
     <!-- Back button -->
-    <a href="index.html" class="back-button">← Back</a>
+    <a href="landing.html" class="back-button">← Back</a>
 
     <!-- Map container -->
     <div id="map"></div>
 
     <!-- Leaflet JS -->
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-    <!-- Your JS file -->
-    <script src="script.js"></script>
+    <script>
+        // Initialize map
+        var map = L.map('map').setView([51.505, -0.09], 13);
+
+        // Add OpenStreetMap tiles
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        }).addTo(map);
+
+        // Add marker
+        var marker = L.marker([51.505, -0.09]).addTo(map)
+            .bindPopup('Meetup Here!')
+            .openPopup();
+
+        // Dancing GIFs array
+        var gifUrls = [
+            "https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3Z2ZiMThzZ2F0dXdvNTVtcWZ4eHRqdWJlYnp0dW1pYmZseDUyNmpjcCZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/i1WV1ITtfeQZZWbswI/giphy.gif",
+            "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExMWtndmF3YXExc296eThxbXhvcm5lMDNkMmpra2F5bGxrZnRvZ3JhZCZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/10iNr7I2U4UyqI/giphy.gif",
+            "https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3ZmtnenZ6NGhlZncybmRsZmpkZGI1Mm5sMXowd29xYnJwYnR1OHkyOCZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/ZP17ATefueJjy/giphy.gif",
+            "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExdG5jMXFqa3YyY2FodThnangyb3hwbDNmNnpoZWl1Z29xcmh3aW03eiZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/ctoq60shDOksx2smpf/giphy.gif",
+            "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExZmsxdDhwMXRneHBqb2hjMjhvcGhmNW1oejF6aXQ1aTFqdDE1enUwaCZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/61l3l1znEf1hZQjVfW/giphy.gif"
+        ];
+
+        var gifs = [];
+        var angles = []; // initial angles
+        var radius = 100; // distance from marker in pixels
+
+        // Create GIF elements
+        gifUrls.forEach((url, i) => {
+            var img = document.createElement("img");
+            img.src = url;
+            img.className = "dancing-gif";
+            document.body.appendChild(img);
+            gifs.push(img);
+            angles.push(i * (360 / gifUrls.length)); // spread evenly
+        });
+
+        // Update GIF positions around marker
+        function updateGIFs() {
+            var markerPoint = map.latLngToContainerPoint(marker.getLatLng());
+            gifs.forEach((gif, i) => {
+                angles[i] += 2; // rotation speed
+                var rad = angles[i] * Math.PI / 180;
+                var x = markerPoint.x + radius * Math.cos(rad) - gif.offsetWidth / 2;
+                var y = markerPoint.y + radius * Math.sin(rad) - gif.offsetHeight / 2;
+                gif.style.left = x + "px";
+                gif.style.top = y + "px";
+            });
+        }
+
+        // Animate GIFs continuously
+        setInterval(updateGIFs, 30);
+
+        // Make sure GIFs track the map when panning/zooming
+        map.on("move", updateGIFs);
+        map.on("zoom", updateGIFs);
+    </script>
 </body>
 </html>
-
-
