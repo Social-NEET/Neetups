@@ -3,29 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meetup Map</title>
+    <title>Leaflet Map Example</title>
     <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <style>
-        /* Map fills the page */
+        /* Make the map fill most of the page */
         #map {
-            height: 100vh;
+            height: 90vh; /* leave space for the back button */
             width: 100%;
         }
 
-        /* Back button container */
-        .back-container {
-            position: fixed;
-            top: 10px;
-            left: 10px;
-            display: flex;
-            align-items: center;
-            gap: 10px; /* space between button and GIF */
-            z-index: 1000;
-        }
-
-        /* Back button */
+        /* Back button styling */
         .back-button {
+            display: inline-block;
+            margin: 10px;
             padding: 10px 20px;
             font-size: 16px;
             font-weight: bold;
@@ -34,6 +25,10 @@
             border: none;
             border-radius: 6px;
             text-decoration: none;
+            position: fixed; /* stays at top-left */
+            top: 10px;
+            left: 10px;
+            z-index: 1000; /* above the map */
             transition: background-color 0.3s, transform 0.2s;
         }
 
@@ -41,41 +36,18 @@
             background-color: #0056b3;
             transform: scale(1.05);
         }
-
-        /* GIF next to button */
-        .back-gif {
-            width: 40px;
-            height: 40px;
-        }
     </style>
 </head>
 <body>
-    <!-- Back button + GIF -->
-    <div class="back-container">
-        <a href="landing.html" class="back-button">← Back</a>
-        <img src="https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExZTlra2w3dzA5OHVvbDJrcjY0em5qemh6OWU2ZGR4MjU4cGFlMmw5ZCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/yfrNvoSqxVSSfyLK0u/giphy.gif" class="back-gif" alt="Dancing GIF">
-    </div>
+    <!-- Back button -->
+    <a href="landing.html" class="back-button">← Back</a>
 
     <!-- Map container -->
     <div id="map"></div>
 
     <!-- Leaflet JS -->
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-    <script>
-        // Initialize map
-        var map = L.map('map').setView([51.505, -0.09], 13);
-
-        // Add OpenStreetMap tiles
-        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 19,
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-        }).addTo(map);
-
-        // Add marker
-        L.marker([51.505, -0.09]).addTo(map)
-            .bindPopup('Meetup Here!')
-            .openPopup();
-    </script>
+    <!-- Your JS file -->
+    <script src="script.js"></script>
 </body>
 </html>
-
