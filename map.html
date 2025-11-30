@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leaflet Map Example</title>
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <style>
+        /* Make the map fill most of the page */
+        #map {
+            height: 90vh; /* leave space for the back button */
+            width: 100%;
+        }
+
+        /* Back button styling */
+        .back-button {
+            display: inline-block;
+            margin: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            color: #fff;
+            background-color: #007BFF;
+            border: none;
+            border-radius: 6px;
+            text-decoration: none;
+            position: fixed; /* stays at top-left */
+            top: 10px;
+            left: 50px;
+            z-index: 1000; /* above the map */
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        .back-button:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <!-- Back button -->
+    <a href="landing.html" class="back-button">← Back</a>
+
+    <!-- Map container -->
+    <div id="map"></div>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <!-- Your JS file -->
+    <script src="script.js"></script>
+</body>
+</html>
+

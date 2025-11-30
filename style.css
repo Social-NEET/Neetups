@@ -1,0 +1,11 @@
+/* Make the map fill the full viewport */
+#map {
+    height: 100vh; /* full height of the browser window */
+    width: 100%;   /* full width */
+}
+
+/* Optional: remove margin/padding from body to avoid scrollbars */
+body {
+    margin: 0;
+    padding: 0;
+}
